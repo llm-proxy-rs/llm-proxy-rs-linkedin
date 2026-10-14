@@ -106,6 +106,46 @@ def model_row(cr: cairo.Context, name: str, y: float, latest: bool = True) -> No
     )
 
 
+def dated_card(path: Path) -> None:
+    """Same note, plus Claude Sonnet 5.5 and Claude Haiku 5.5 tagged LATEST."""
+    surf, cr = surface()
+    label = "LLM-PROXY-RS"
+    ls = 72
+    tw = measure(label, ls, tracking=0.08)
+    draw_line(cr, label, (W - tw) / 2, 56, ls, tracking=0.08)
+
+    hs = 32
+    below = 92
+    models_y = 196
+    install_y = 560
+    draw_centered(cr, "SUPPORTED MODELS", models_y, hs, tracking=0.10)
+    my = models_y + below
+    for name, latest in (
+        ("Claude Fable 5.1", False),
+        ("Claude Opus 5.5", False),
+        ("Claude Sonnet 5.5", True),
+        ("Claude Haiku 5.5", True),
+        ("GPT-6 Astra", False),
+        ("GPT-6 Sol", False),
+        ("GPT-6 Luna", False),
+    ):
+        model_row(cr, name, my, latest)
+        my += 36
+
+    draw_centered(cr, "INSTALL", install_y, hs, tracking=0.12)
+    bash_block(
+        cr,
+        install_y + below - 8,
+        (
+            "git clone https://github.com/llm-proxy-rs/llm-proxy-rs",
+            "cd llm-proxy-rs",
+            "cargo run -p server",
+        ),
+    )
+    footer(cr)
+    surf.write_to_png(str(path))
+
+
 def note_card(path: Path) -> None:
     surf, cr = surface()
     label = "LLM-PROXY-RS"
@@ -147,10 +187,13 @@ def main() -> None:
     DOCS.mkdir(parents=True, exist_ok=True)
     a = DOCS / "linkedin-llm-proxy-rs.png"
     b = DOCS / "linkedin-llm-proxy-rs-note.png"
+    c = DOCS / "linkedin-llm-proxy-rs-note-2026-10-13.png"
     verse_card(a)
     note_card(b)
+    dated_card(c)
     print(a)
     print(b)
+    print(c)
 
 
 if __name__ == "__main__":
