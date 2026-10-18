@@ -146,6 +146,38 @@ def dated_card(path: Path) -> None:
     surf.write_to_png(str(path))
 
 
+def setup_card(path: Path) -> None:
+    """Service offer: three steps, no how-to."""
+    surf, cr = surface()
+    label = "LLM-PROXY-RS"
+    ls = 64
+    tw = measure(label, ls, tracking=0.08)
+    draw_line(cr, label, (W - tw) / 2, 88, ls, tracking=0.08)
+
+    draw_centered(cr, "ENTERPRISE SETUP", 196, 36, tracking=0.08)
+
+    steps = ("Setup AWS Account", "Setup Identity Provider", "Setup llm-proxy-rs")
+    ns = 64
+    gap = 40
+    slot = max(measure(str(i), ns, tracking=0.04) for i in (1, 2, 3))
+    cr.select_font_face("Liberation Serif", cairo.FONT_SLANT_NORMAL, cairo.FONT_WEIGHT_NORMAL)
+    cr.set_font_size(36)
+    title_w = max(cr.text_extents(t)[2] for t in steps)
+    x = (W - (slot + gap + title_w)) / 2
+    y = 340
+    for i, title in enumerate(steps, start=1):
+        num = str(i)
+        nw = measure(num, ns, tracking=0.04)
+        draw_line(cr, num, x + (slot - nw) / 2, y, ns, tracking=0.04)
+        serif(cr, title, x + slot + gap, y + 48, 36)
+        y += 156
+
+    serif(cr, "Enable Claude Code for your company.", 0, 890, 28, italic=True, center=True)
+
+    footer(cr)
+    surf.write_to_png(str(path))
+
+
 def note_card(path: Path) -> None:
     surf, cr = surface()
     label = "LLM-PROXY-RS"
@@ -188,12 +220,15 @@ def main() -> None:
     a = DOCS / "linkedin-llm-proxy-rs.png"
     b = DOCS / "linkedin-llm-proxy-rs-note.png"
     c = DOCS / "linkedin-llm-proxy-rs-note-2026-10-13.png"
+    d = DOCS / "linkedin-llm-proxy-rs-enterprise-setup.png"
     verse_card(a)
     note_card(b)
     dated_card(c)
+    setup_card(d)
     print(a)
     print(b)
     print(c)
+    print(d)
 
 
 if __name__ == "__main__":
