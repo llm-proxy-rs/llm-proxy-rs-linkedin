@@ -13,4 +13,5 @@ Writes:
 - `docs/linkedin-llm-proxy-rs.png` — title plate
 - `docs/linkedin-llm-proxy-rs-note.png` — supported models (Claude Fable 5.1, Claude Opus 5.5, GPT-6 Sol, GPT-6 Luna) and install
 - `docs/linkedin-llm-proxy-rs-note-2026-10-13.png` — note plate with Claude Sonnet 5.5 and Claude Haiku 5.5 tagged LATEST
+- `docs/linkedin-llm-proxy-rs-note-2026-11-04.png` — same note; GPT-6 Sol replaced by GPT-6.1 Sol, plus GPT-6.1 Terra; only those two tagged LATEST; Luna last
 - `docs/linkedin-llm-proxy-rs-enterprise-setup.png` — enterprise setup: 1 AWS Account, 2 Identity Provider, 3 llm-proxy-rs; tagline Enable Claude Code for your company.
