@@ -146,6 +146,48 @@ def dated_card(path: Path) -> None:
     surf.write_to_png(str(path))
 
 
+def gpt61_card(path: Path) -> None:
+    """Same note as 2026-10-13. GPT-6 Sol is replaced by GPT-6.1 Sol so Sol is listed once.
+    Order follows Bedrock capability: Astra, then 6.1 Sol, 6.1 Terra, Luna last."""
+    surf, cr = surface()
+    label = "LLM-PROXY-RS"
+    ls = 72
+    tw = measure(label, ls, tracking=0.08)
+    draw_line(cr, label, (W - tw) / 2, 56, ls, tracking=0.08)
+
+    hs = 32
+    below = 92
+    models_y = 196
+    install_y = 596
+    draw_centered(cr, "SUPPORTED MODELS", models_y, hs, tracking=0.10)
+    my = models_y + below
+    for name, latest in (
+        ("Claude Fable 5.1", False),
+        ("Claude Opus 5.5", False),
+        ("Claude Sonnet 5.5", False),
+        ("Claude Haiku 5.5", False),
+        ("GPT-6 Astra", False),
+        ("GPT-6.1 Sol", True),
+        ("GPT-6.1 Terra", True),
+        ("GPT-6 Luna", False),
+    ):
+        model_row(cr, name, my, latest)
+        my += 36
+
+    draw_centered(cr, "INSTALL", install_y, hs, tracking=0.12)
+    bash_block(
+        cr,
+        install_y + below - 8,
+        (
+            "git clone https://github.com/llm-proxy-rs/llm-proxy-rs",
+            "cd llm-proxy-rs",
+            "cargo run -p server",
+        ),
+    )
+    footer(cr)
+    surf.write_to_png(str(path))
+
+
 def setup_card(path: Path) -> None:
     """Service offer: three steps, no how-to."""
     surf, cr = surface()
@@ -221,14 +263,17 @@ def main() -> None:
     b = DOCS / "linkedin-llm-proxy-rs-note.png"
     c = DOCS / "linkedin-llm-proxy-rs-note-2026-10-13.png"
     d = DOCS / "linkedin-llm-proxy-rs-enterprise-setup.png"
+    e = DOCS / "linkedin-llm-proxy-rs-note-2026-11-04.png"
     verse_card(a)
     note_card(b)
     dated_card(c)
     setup_card(d)
+    gpt61_card(e)
     print(a)
     print(b)
     print(c)
     print(d)
+    print(e)
 
 
 if __name__ == "__main__":
